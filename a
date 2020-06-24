@@ -10,18 +10,6 @@ def args():
  args.add_argument('-e', help='end kill all', nargs="?", const="1")
  return args.parse_args()
 
-if args().y is not None:
- os.system("sudo apt-get install hostapd")
- os.system("sudo apt-get install dnsmasq")
- print("")
-if args().e is not None:
- os.system("sudo /etc/init.d/dnsmasq stop > /dev/null 2>&1")
- os.system("sudo pkill dnsmasq")
- os.system("sudo killall hostapd > /dev/null 2>&1")
- os.system("sudo sysctl net.ipv4.ip_forward=0 > /dev/null 2>&1")
- print("Done ....")
- print("")
-
 
 #Flush iptables
 def fIpTables():
@@ -44,6 +32,36 @@ def write_file(path, s):
     p.wait()
  _run_cmd_write(("/usr/bin/sudo", "/usr/bin/tee", path), s)
 #write file 0
+
+#kill stop all
+def killSall():
+ print("[~~] Stopping...")
+ os.system("sudo /etc/init.d/dnsmasq stop > /dev/null 2>&1")
+ os.system("sudo pkill dnsmasq")
+ os.system("sudo killall hostapd > /dev/null 2>&1")
+ os.system("sudo sysctl net.ipv4.ip_forward=0 > /dev/null 2>&1")
+
+ print("[~~] Restoring old NetworkManager.cfg")
+ if os.path.isfile("/etc/NetworkManager/NetworkManager.conf.backup"):
+  os.system("sudo mv /etc/NetworkManager/NetworkManager.conf.backup /etc/NetworkManager/NetworkManager.conf")
+ else:
+  os.system("sudo mv /etc/NetworkManager/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf.deleted > /dev/null 2>&1")
+ print("[~~] Restarting NetworkManager...")
+ os.system("sudo service network-manager restart")
+
+ print("[~~] Restoring old dnsmasq.conf...")
+ os.system("sudo mv /etc/dnsmasq.conf.backup /etc/dnsmasq.conf > /dev/null 2>&1")
+#kill stop all
+
+#get arguments
+if args().y is not None:
+ os.system("sudo apt-get install hostapd")
+ os.system("sudo apt-get install dnsmasq")
+ print("")
+if args().e is not None:
+ killSall()
+#get arguments
+
 
 #begins
 os.system("sudo echo")
@@ -98,7 +116,7 @@ print("[~~] Configuring AP interface...")
 os.system("sudo ifconfig " + wlan_ap + " up 10.0.0.1 netmask 255.255.255.0")
 print("[~~] Applying iptables rules...")
 fIpTables()
-os.system("sudo sysctl net.ipv4.ip_forward=1")
+os.system("sudo sysctl net.ipv4.ip_forward=1 > /dev/null 2>&1")
 os.system("sudo iptables --table nat --append POSTROUTING --out-interface " + eth_ap + " -j MASQUERADE")
 os.system("sudo iptables --append FORWARD --in-interface " + wlan_ap + " -j ACCEPT")
 os.system("sudo iptables -t nat -A POSTROUTING -o "+eth_ap+" -j MASQUERADE")
@@ -119,22 +137,7 @@ os.system("sudo hostapd /etc/hostapd/hostapd.conf")
 
 #..stop all, restart
 print("")
-print("[~~] Stopping...")
-os.system("sudo /etc/init.d/dnsmasq stop > /dev/null 2>&1")
-os.system("sudo pkill dnsmasq")
-os.system("sudo killall hostapd > /dev/null 2>&1")
-os.system("sudo sysctl net.ipv4.ip_forward=0")
 
-print("[~~] Restoring old NetworkManager.cfg")
-if os.path.isfile("/etc/NetworkManager/NetworkManager.conf.backup"):
- os.system("sudo mv /etc/NetworkManager/NetworkManager.conf.backup /etc/NetworkManager/NetworkManager.conf")
-else:
- os.system("sudo rm /etc/NetworkManager/NetworkManager.conf")
-print("[~~] Restarting NetworkManager...")
-os.system("sudo service network-manager restart")
-
-print("[~~] Restoring old dnsmasq.conf...")
-os.system("sudo mv /etc/dnsmasq.conf.backup /etc/dnsmasq.conf")
-
+killSall()
 fIpTables()
 #..stop all, restart
