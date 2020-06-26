@@ -10,7 +10,6 @@ def args():
  args.add_argument('-e', help='end kill all', nargs="?", const="1")
  return args.parse_args()
 
-
 #Flush iptables
 def fIpTables():
  os.system("sudo iptables --flush")
@@ -33,6 +32,8 @@ def write_file(path, s):
  _run_cmd_write(("/usr/bin/sudo", "/usr/bin/tee", path), s)
 #write file 0
 
+dnsSpoof_host_file = "dnsSpoof_abzq.hosts"
+
 #kill stop all
 def killSall():
  print("[~~] Stopping...")
@@ -40,6 +41,7 @@ def killSall():
  os.system("sudo pkill dnsmasq")
  os.system("sudo killall hostapd > /dev/null 2>&1")
  os.system("sudo sysctl net.ipv4.ip_forward=0 > /dev/null 2>&1")
+ os.system("sudo rm "+os.getcwd() + "/"+dnsSpoof_host_file)
 
  print("[~~] Restoring old NetworkManager.cfg")
  if os.path.isfile("/etc/NetworkManager/NetworkManager.conf.backup"):
@@ -57,9 +59,12 @@ def killSall():
 if args().y is not None:
  os.system("sudo apt-get install hostapd")
  os.system("sudo apt-get install dnsmasq")
+ os.system("sudo apt-get install nano")
  print("")
 if args().e is not None:
  killSall()
+ print("Done......")
+ exit() 
 #get arguments
 
 
@@ -89,11 +94,19 @@ print("")
 print("[~~] Backing up /etc/dnsmasq.conf...")
 os.system("sudo cp /etc/dnsmasq.conf /etc/dnsmasq.conf.backup")
 print("[~~] Creating new /etc/dnsmasq.conf...")
-dnsmasq_txt = "# disables dnsmasq reading any other files like /etc/resolv.conf for nameservers\nno-resolv\n# Interface to bind to\ninterface=" + wlan_ap + "\n#Specify starting_range,end_range,lease_time\ndhcp-range=10.0.0.3,10.0.0.20,12h\n# dns addresses to send to the clients\nserver=8.8.8.8\nserver=10.0.0.1\n"
+dnsmasq_txt = "# disables dnsmasq reading any other files like /etc/resolv.conf for nameservers\nno-resolv\n# Interface to bind to\ninterface=" + wlan_ap + "\n#Specify starting_range,end_range,lease_time\ndhcp-range=10.0.0.3,10.0.0.20,12h\n# dns addresses to send to the clients\nserver=8.8.8.8\nserver=10.0.0.1\nno-hosts\naddn-hosts="+os.getcwd() + "/"+dnsSpoof_host_file
 os.system("sudo rm /etc/dnsmasq.conf > /dev/null 2>&1")
 print("[~~] Writing config file...")
 write_file("/etc/dnsmasq.conf", dnsmasq_txt)
 #..DNSMASQ CONFIG 0
+
+
+#configure dns spoofing 1
+os.system("sudo touch "+dnsSpoof_host_file)
+write_file(os.getcwd() +"/"+ dnsSpoof_host_file, "##192.168.0.1 domain\n##close when you are done to continue.\n\n\n")
+os.system("sudo xterm -hold -e nano "+ os.getcwd()+"/" + dnsSpoof_host_file)
+#configure dns spoofing 0
+
 
 #..HOSTAPD CONFIG 1
 ssid = input("\n[??] Please enter the SSID for the AP: ")
