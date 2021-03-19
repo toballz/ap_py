@@ -104,7 +104,7 @@ write_file("/etc/dnsmasq.conf", dnsmasq_txt)
 #configure dns spoofing 1
 os.system("sudo touch "+dnsSpoof_host_file)
 write_file(os.getcwd() +"/"+ dnsSpoof_host_file, "##192.168.0.1 domain\n##close when you are done to continue.\n\n\n")
-os.system("sudo xterm -hold -e nano "+ os.getcwd()+"/" + dnsSpoof_host_file)
+os.system("sudo nano "+ os.getcwd()+"/" + dnsSpoof_host_file)
 #configure dns spoofing 0
 
 
