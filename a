@@ -3,6 +3,7 @@ import os
 import subprocess
 from argparse import ArgumentParser, ArgumentTypeError
 
+mainDir=os.path.expanduser('~') 
 
 def args():
  args = ArgumentParser()
@@ -49,10 +50,9 @@ def killSall():
  else:
   os.system("sudo mv /etc/NetworkManager/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf.deleted > /dev/null 2>&1")
  print("[~~] Restarting NetworkManager...")
- os.system("sudo service network-manager restart")
+ os.system("sudo service NetworkManager restart")
 
- print("[~~] Restoring old dnsmasq.conf...")
- os.system("sudo mv /etc/dnsmasq.conf.backup /etc/dnsmasq.conf > /dev/null 2>&1")
+#@print("[~~] Restoring old dnsmasq.conf...")
 #kill stop all
 
 #get arguments
@@ -79,25 +79,32 @@ fIpTables()
 
 #..netwoorkmanager.conf 1
 network_manager_txt = "[main]\nplugins=keyfile\n\n[keyfile]\nunmanaged-devices=interface-name:" + wlan_ap + "\n"
-print("[~~] Backing up NetworkManager.cfg...")
+print("\n[~~] Backing up NetworkManager.cfg...")
 os.system("sudo cp /etc/NetworkManager/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf.backup")
 print("[~~] Editing NetworkManager.cfg...")
 write_file("/etc/NetworkManager/NetworkManager.conf", network_manager_txt)
 print("[~~] Restarting NetworkManager...")
-os.system("sudo service network-manager restart")
+os.system("sudo service NetworkManager restart")
 os.system("sudo ifconfig " + wlan_ap + " up")
 #..netwoorkmanager.conf 0
 
 #..DNSMASQ CONFIG 1
 os.system("sudo pkill dnsmasq")
 print("")
-print("[~~] Backing up /etc/dnsmasq.conf...")
-os.system("sudo cp /etc/dnsmasq.conf /etc/dnsmasq.conf.backup")
-print("[~~] Creating new /etc/dnsmasq.conf...")
-dnsmasq_txt = "# disables dnsmasq reading any other files like /etc/resolv.conf for nameservers\nno-resolv\n# Interface to bind to\ninterface=" + wlan_ap + "\n#Specify starting_range,end_range,lease_time\ndhcp-range=10.0.0.3,10.0.0.20,12h\n# dns addresses to send to the clients\nserver=8.8.8.8\nserver=10.0.0.1\nno-hosts\naddn-hosts="+os.getcwd() + "/"+dnsSpoof_host_file
-os.system("sudo rm /etc/dnsmasq.conf > /dev/null 2>&1")
+print("[~~] Creating new "+mainDir+"/dnsmasq.conf...")
+dnsmasq_txt = "# disables dnsmasq reading any other files like /etc/resolv.conf for nameservers\n\
+	no-resolv\n# Interface to bind to\n\
+	interface=" + wlan_ap + \
+	"\n#Specify starting_range,end_range,lease_time\n\
+	dhcp-range=10.0.0.3,10.0.0.20,12h\n\
+	# dns addresses to send to the clients\n\
+	server=8.8.8.8\n\
+	server=10.0.0.1\n\
+	address=/#/10.0.0.1\
+	no-hosts\n\
+	addn-hosts="+os.getcwd() + "/"+dnsSpoof_host_file
 print("[~~] Writing config file...")
-write_file("/etc/dnsmasq.conf", dnsmasq_txt)
+write_file(mainDir+"/dnsmasq.conf", dnsmasq_txt)
 #..DNSMASQ CONFIG 0
 
 
@@ -117,10 +124,8 @@ while True:
  else:
   print("[??] Enter a channel number.")
 hostapd_txt = "interface=" + wlan_ap + "\ndriver=nl80211\nssid=" + ssid + "\nhw_mode=g\nchannel=" + channel + "\nmacaddr_acl=0\nauth_algs=1\nignore_broadcast_ssid=0\n"
-print("[~~] Deleting old config file...")
-os.system("sudo rm /etc/hostapd/hostapd.conf")
 print("[~~] Writing config file...")
-write_file("/etc/hostapd/hostapd.conf", hostapd_txt)
+write_file(mainDir+"/hostapd.conf", hostapd_txt)
 #..HOSTAPD CONFIG 0
 
 #..IPTABLES 1
@@ -144,7 +149,7 @@ os.system("sudo pkill dnsmasq")
 os.system("sudo dnsmasq")
 os.system("sudo killall hostapd > /dev/null 2>&1")
 print("")
-os.system("sudo hostapd /etc/hostapd/hostapd.conf")
+os.system("sudo hostapd "+mainDir+"/hostapd.conf")
 #..start dnsmasq, hostapd.conf 0
 
 
