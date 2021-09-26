@@ -1,6 +1,5 @@
-#!/usr/bin/python3
-import os
-#import subprocess
+import os, sys
+import random as rand
 from argparse import ArgumentParser, ArgumentTypeError
 
 cwd = os.getcwd()+"/"
@@ -44,16 +43,17 @@ try:
  #..DNSMASQ CONFIG 1
  print("")
  print("[~~] Creating /dnsmasq.conf...")
+ os.system("sudo service NetworkManager restart")
  os.system("sudo pkill dnsmasq")
  dnsmasq_txt = "#disable dnsmasq reading other files ~ /etc/resolv.conf for nameservers\nno-resolv\n\ninterface="+wlan_ap+"\n\n#starting_range,end_range,lease_time\ndhcp-range=10.0.0.3,10.0.0.20,12h\n\n#dns addresses to send to the clients\nserver=8.8.8.8\nserver=10.0.0.1\nno-hosts\n"
  write_file(cwd+"dnsmasq.conf", dnsmasq_txt)
- os.system("sudo service NetworkManager restart")
  #...0
 
  #..HOSTAPD CONFIG 1
  print("")
  ssid = input("[??] Input ssid name:(Free-Wifi) ") or "Free-Wifi"
- channel = input("[??] Input channel number:(2) ") or "2"
+ rnd = rand.randint(0, 9)
+ channel = input("[??] Input channel number:("+str(rnd)+") ") or ""+rnd
 
  hostapd_txt = "interface=" + wlan_ap + "\ndriver=nl80211\nssid=" + ssid + "\nhw_mode=g\nchannel=" + channel + "\nmacaddr_acl=0\nauth_algs=1\nignore_broadcast_ssid=0\n"
  print("")
@@ -84,6 +84,18 @@ try:
  print("[~~] Starting HOSTAPD server...")
  print("")
  input("[!!] Press Enter to continue: ")
+ #############driftnet 1
+ print("")
+ fiDriftnet = input("[!?] Use Driftnet (y/N): ")
+ if(fiDriftnet == "y"):
+  os.system("sudo driftnet -i "+wlan_ap+" & disown")
+ ##...0
+ ##wireshark 1
+ print("")
+ fiwireshark = input("[!?] Use wireshark (y/N): ")
+ if(fiwireshark == "y"):
+  os.system("sudo wireshark -i "+wlan_ap+" -k & disown")    
+ ###################...0
  print("")
  os.system("sudo killall hostapd > /dev/null 2>&1")
  os.system("sudo hostapd "+cwd+"hostapd.conf")
@@ -97,4 +109,5 @@ except:
  #..stop all
  flushIpTables()
  killSall()
+ print("Error:-",sys.exc_info())
  #...0
