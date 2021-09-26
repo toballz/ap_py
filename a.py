@@ -53,7 +53,7 @@ try:
  print("")
  ssid = input("[??] Input ssid name:(Free-Wifi) ") or "Free-Wifi"
  rnd = rand.randint(0, 9)
- channel = input("[??] Input channel number:("+str(rnd)+") ") or ""+rnd
+ channel = input("[??] Input channel number:("+str(rnd)+") ") or str(rnd)
 
  hostapd_txt = "interface=" + wlan_ap + "\ndriver=nl80211\nssid=" + ssid + "\nhw_mode=g\nchannel=" + channel + "\nmacaddr_acl=0\nauth_algs=1\nignore_broadcast_ssid=0\n"
  print("")
