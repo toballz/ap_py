@@ -88,14 +88,14 @@ try:
  print("")
  fiDriftnet = input("[!?] Use Driftnet (y/N): ")
  if(fiDriftnet == "y"):
-  os.system("sudo driftnet -i "+wlan_ap+" & disown")
+  os.system("sudo driftnet -i "+wlan_ap+" &")
  ##...0
  ##wireshark 1
- print("")
  fiwireshark = input("[!?] Use wireshark (y/N): ")
  if(fiwireshark == "y"):
-  os.system("sudo wireshark -i "+wlan_ap+" -k & disown")    
+  os.system("sudo wireshark -i "+wlan_ap+" -k &")    
  ###################...0
+ print("")
  print("")
  os.system("sudo killall hostapd > /dev/null 2>&1")
  os.system("sudo hostapd "+cwd+"hostapd.conf")
