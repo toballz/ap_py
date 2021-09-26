@@ -7,7 +7,6 @@ cwd = os.getcwd()+"/"
 try:
  #Flush iptables 1
  def flushIpTables():
-  os.system("sudo service NetworkManager restart")
   os.system("sudo iptables --flush")
   os.system("sudo iptables --table nat --flush")
   os.system("sudo iptables --delete-chain")
@@ -24,7 +23,6 @@ try:
 
  #kill stop all
  def killSall():
-  print("")
   print("")
   print("[~~] Stopping...")
   os.system("sudo pkill dnsmasq > /dev/null 2>&1")
@@ -46,10 +44,10 @@ try:
  #..DNSMASQ CONFIG 1
  print("")
  print("[~~] Creating /dnsmasq.conf...")
- flushIpTables() 
  os.system("sudo pkill dnsmasq")
  dnsmasq_txt = "#disable dnsmasq reading other files ~ /etc/resolv.conf for nameservers\nno-resolv\n\ninterface="+wlan_ap+"\n\n#starting_range,end_range,lease_time\ndhcp-range=10.0.0.3,10.0.0.20,12h\n\n#dns addresses to send to the clients\nserver=8.8.8.8\nserver=10.0.0.1\nno-hosts\n"
  write_file(cwd+"dnsmasq.conf", dnsmasq_txt)
+ os.system("sudo service NetworkManager restart")
  #...0
 
  #..HOSTAPD CONFIG 1
@@ -84,6 +82,8 @@ try:
  os.system("sudo pkill dnsmasq")
  os.system("sudo dnsmasq -C "+cwd+"dnsmasq.conf")
  print("[~~] Starting HOSTAPD server...")
+ print("")
+ print("[~~] Press Enter to continue ...")
  print("")
  os.system("sudo killall hostapd > /dev/null 2>&1")
  os.system("sudo hostapd "+cwd+"hostapd.conf")
