@@ -83,7 +83,7 @@ try:
  os.system("sudo dnsmasq -C "+cwd+"dnsmasq.conf")
  print("[~~] Starting HOSTAPD server...")
  print("")
- print("[~~] Press Enter to continue ...")
+ input("[!!] Press Enter to continue: ")
  print("")
  os.system("sudo killall hostapd > /dev/null 2>&1")
  os.system("sudo hostapd "+cwd+"hostapd.conf")
