@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import os, sys
 import random as rand
 from argparse import ArgumentParser, ArgumentTypeError
