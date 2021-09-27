@@ -1,0 +1,2 @@
+# ./acp.sh install
+# acp
