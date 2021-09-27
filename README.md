@@ -1,4 +1,4 @@
 #
-sudo chmod +x acp.sh\n
-./acp.sh install
+sudo chmod +x acp.sh .
+./acp.sh install .
 # acp
