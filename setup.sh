@@ -21,7 +21,7 @@ if [ "$1" == "install" ];then
  echo
  echo "[!!] Attempt install finished."
  
- sudo rm /usr/local/bin/acp
+ sudo rm /usr/local/bin/acp > /dev/null 2>&1
  sudo chmod +x ./a.py
  sudo mv a.py /usr/local/bin/acp
  sudo dos2unix /usr/local/bin/acp > /dev/null 2>&1
