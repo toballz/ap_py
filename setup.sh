@@ -6,7 +6,7 @@ if [ "$1" == "install" ];then
  sudo rm /usr/local/bin/acp
  sudo chmod +x ./a.py
  sudo mv a.py /usr/local/bin/acp
- sudo dos2unix /usr/local/bin/acp
+ sudo dos2unix /usr/local/bin/acp > /dev/null 2>&1
  echo "[!!] Installing DNAMASQ.."
  echo
  sudo apt-get install dnsmasq
