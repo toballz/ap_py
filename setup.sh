@@ -19,9 +19,8 @@ if [ "$1" == "install" ];then
  echo
  sudo apt-get install wireshark
  echo
- sudo apt-get install dos2unix
- echo
  echo "[!!] Installing DO2UNIX.."
+ sudo apt-get install dos2unix
  echo
  echo "[!!] Attempt install finished."
  
