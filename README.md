@@ -1,6 +1,6 @@
 #
-$`sudo chmod +x acp.sh`
+$`sudo chmod +x setup.sh`
 
-$`./acp.sh install`
+$`./setup.sh install`
 
 $`acp`
