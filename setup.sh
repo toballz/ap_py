@@ -19,11 +19,15 @@ if [ "$1" == "install" ];then
  echo
  sudo apt-get install wireshark
  echo
+ sudo apt-get install dos2unix
+ echo
+ echo "[!!] Installing DO2UNIX.."
+ echo
  echo "[!!] Attempt install finished."
  
  sudo rm /usr/local/bin/acp > /dev/null 2>&1
  sudo chmod +x ./a.py
- sudo mv a.py /usr/local/bin/acp
+ sudo cp a.py /usr/local/bin/acp
  sudo dos2unix /usr/local/bin/acp > /dev/null 2>&1
 fi
 
