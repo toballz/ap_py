@@ -1,6 +1,6 @@
 #
-#$`sudo chmod +x acp.sh`
+$`sudo chmod +x acp.sh`
 
-#$`./acp.sh install`
+$`./acp.sh install`
 
 `acp`
