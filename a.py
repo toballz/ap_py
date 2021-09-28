@@ -47,7 +47,7 @@ try:
  os.system("sudo service NetworkManager restart")
  os.system("sudo pkill dnsmasq")
  dnsmasq_txt = "#disable dnsmasq reading other files ~ /etc/resolv.conf for nameservers\nno-resolv\n\ninterface="+wlan_ap+"\n\n#starting_range,end_range,lease_time\ndhcp-range=10.0.0.3,10.0.0.20,12h\n\n#dns addresses to send to the clients\nserver=8.8.8.8\nserver=0.0.0.0\naddress=/#/10.0.0.1\nno-hosts\n"
- write_file(cwd+"dnsmasq.conf", dnsmasq_txt)
+ write_file("/tmp/acp_dnsmasq.conf", dnsmasq_txt)
  #...0
 
  #..HOSTAPD CONFIG 1
@@ -59,7 +59,7 @@ try:
  hostapd_txt = "interface=" + wlan_ap + "\ndriver=nl80211\nssid=" + ssid + "\nhw_mode=g\nchannel=" + channel + "\nmacaddr_acl=0\nauth_algs=1\nignore_broadcast_ssid=0\n"
  print("")
  print("[~~] creating /hostapd.conf ...")
- write_file(cwd+"hostapd.conf", hostapd_txt)
+ write_file("/tmp/acp_hostapd.conf", hostapd_txt)
  #...0
 
  #..IPTABLES 1
@@ -81,7 +81,7 @@ try:
  print("")
  print("[~~] Starting DNSMASQ server...")
  os.system("sudo pkill dnsmasq")
- os.system("sudo dnsmasq -C "+cwd+"dnsmasq.conf")
+ os.system("sudo dnsmasq -C /tmp/acp_dnsmasq.conf")
  print("[~~] Starting HOSTAPD server...")
  print("")
  input("[!!] Press Enter to continue: ")
@@ -99,7 +99,7 @@ try:
  print("")
  print("")
  os.system("sudo killall hostapd > /dev/null 2>&1")
- os.system("sudo hostapd "+cwd+"hostapd.conf")
+ os.system("sudo hostapd /tmp/acp_hostapd.conf")
  #...0
 
  #end all
