@@ -46,7 +46,7 @@ try:
  print("[~~] Creating /dnsmasq.conf...")
  os.system("sudo service NetworkManager restart")
  os.system("sudo pkill dnsmasq")
- dnsmasq_txt = "#disable dnsmasq reading other files ~ /etc/resolv.conf for nameservers\nno-resolv\n\ninterface="+wlan_ap+"\n\n#starting_range,end_range,lease_time\ndhcp-range=10.0.0.3,10.0.0.20,12h\n\n#dns addresses to send to the clients\ndhcp-option=3,10.0.0.1\ndhcp-option=6,10.0.0.1\nserver=8.8.8.8\nserver=0.0.0.0\naddress=/#/10.0.0.1\nno-hosts\n"
+ dnsmasq_txt = "#disable dnsmasq reading other files ~ /etc/resolv.conf for nameservers\nno-resolv\n\ninterface="+wlan_ap+"\n\n#starting_range,end_range,lease_time\ndhcp-range=10.0.0.3,10.0.0.20,12h\n\n#dns addresses to send to the clients\nserver=8.8.8.8\nserver=0.0.0.0\naddress=/#/10.0.0.1\nno-hosts\n"
  write_file(cwd+"dnsmasq.conf", dnsmasq_txt)
  #...0
 
