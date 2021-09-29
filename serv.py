@@ -3,7 +3,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 
 if len(sys.argv)-1 != 2:
     print("""
-Usage: {} <port_number> <url>
+ Usage: {} <port_number> <url>
     """.format(sys.argv[0]))
     sys.exit()
 
