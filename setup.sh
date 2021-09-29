@@ -22,6 +22,9 @@ if [ "$1" == "install" ];then
  echo "[!!] Installing DO2UNIX.."
  sudo apt-get install dos2unix
  echo
+ echo "[!!] Installing VLC.."
+ sudo apt-get install vlc
+ echo
  echo "[!!] Attempt install finished."
  
  sudo rm /usr/local/bin/acp > /dev/null 2>&1
