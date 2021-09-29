@@ -97,7 +97,7 @@ try:
    	 	Require all granted\n</Directory>\" >> /etc/apache2/sites-available/000-default.conf")
   os.system("sudo service apache2 start && sudo service apache2 restart && a2enmod rewrite > /dev/null 2>&1")
   dnsmasq_txt += "dhcp-option=3,10.0.0.1\ndhcp-option=6,10.0.0.1\naddress=/#/10.0.0.1\n"
-###################...0
+#######...0
 
  #..DNSMASQ CONFIG 1
  write_file("/tmp/acp_dnsmasq.conf", dnsmasq_txt)
