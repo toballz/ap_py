@@ -102,7 +102,7 @@ try:
  print("[~~] Starting http redirect server ...")
  os.system("sudo service apache2 stop > /dev/null 2>&1 &")
  os.system("kill -9 $(ps -A | grep python | awk '{print $1}')")
- os.system("python3 /var/www/html/acp_serv.py 80 http://10.0.0.1:233 > /dev/null 2>&1 &")
+ os.system("python3 /usr/local/bin/acp_serv.py 80 http://10.0.0.1:233 > /dev/null 2>&1 &")
  #...0
  #start real http server:233 1
  print("[~~] Starting http main server ...")
