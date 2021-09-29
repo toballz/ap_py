@@ -100,8 +100,8 @@ try:
 #######...0
 
  #..DNSMASQ CONFIG 1
- input("[!!] Press Enter to continue: ")
  write_file("/tmp/acp_dnsmasq.conf", dnsmasq_txt)
+ input("[!!] Press Enter to continue: ")
  print("[~~] Starting DNSMASQ server...")
  os.system("sudo pkill dnsmasq")
  os.system("sudo dnsmasq -C /tmp/acp_dnsmasq.conf")
