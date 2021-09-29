@@ -88,9 +88,7 @@ try:
   dnsmasq_txt += "dhcp-option=3,10.0.0.1\ndhcp-option=6,10.0.0.1\naddress=/#/10.0.0.1\n"
  ##captivePortal 1
  fihttpDirectory = input("[!?] HTTP Directory:(/var/www/html/) ") or "/var/www/html/"
- if(os.path.isdir(fihttpDirectory)):
-  v=1
- else:
+ while(os.path.isdir(fihttpDirectory) == False):
   fihttpDirectory = input("[!?] Directory do not exist try again: ") or "/var/www/html/"
 
 #######...0
