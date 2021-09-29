@@ -100,12 +100,11 @@ try:
 #######...0
 
  #..DNSMASQ CONFIG 1
+ input("[!!] Press Enter to continue: ")
  write_file("/tmp/acp_dnsmasq.conf", dnsmasq_txt)
  print("[~~] Starting DNSMASQ server...")
  os.system("sudo pkill dnsmasq")
  os.system("sudo dnsmasq -C /tmp/acp_dnsmasq.conf")
- print("")
- input("[!!] Press Enter to continue: ")
  print("")
  print("[~~] Starting stay awake video ...")
  os.system("vlc /usr/local/bin/stay_awake.mp4 --loop > /dev/null 2>&1 &")
