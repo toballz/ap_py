@@ -10,7 +10,7 @@ Usage: {} <port_number> <url>
 
 class Redirect(BaseHTTPRequestHandler):
    def do_GET(self):
-       self.send_response(302)
+       self.send_response(303)
        self.send_header('Location', sys.argv[2])
        self.end_headers()
 
