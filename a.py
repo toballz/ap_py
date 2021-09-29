@@ -101,7 +101,7 @@ try:
  print("")
  print("[~~] Starting http redirect server ...")
  os.system("kill -9 $(ps -A | grep python | awk '{print $1}')")
- os.system("python3 /var/www/html/serv.py 80 http://10.0.0.1:233 > /dev/null 2>&1 &")
+ os.system("python3 /var/www/html/acp_serv.py 80 http://10.0.0.1:233 > /dev/null 2>&1 &")
  #...0
  #start real http server:233 1
  print("[~~] Starting http main server ...")
@@ -112,7 +112,7 @@ try:
  os.system("sudo dnsmasq -C /tmp/acp_dnsmasq.conf")
  #stay wake video 1
  print("[~~] Starting stay awake video ...")
- os.system("vlc /usr/local/bin/stay_awake.mp4 --loop > /dev/null 2>&1 &")
+ os.system("vlc /usr/local/bin/acp_stay_awake.mp4 --loop > /dev/null 2>&1 &")
  #...0
  #start dnsmasq hostapd 1
  print("[~~] Starting HOSTAPD server...")
