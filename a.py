@@ -65,7 +65,6 @@ try:
 
 
  #..DNSMASQ CONFIG 3
- print("")
  print("[~~] Creating /dnsmasq.conf...")
  os.system("sudo service NetworkManager restart")
  os.system("sudo pkill dnsmasq")
@@ -86,29 +85,30 @@ try:
  ##captivePortal 1
  ficaptivePortal = input("[!?] Enable captivePortal (y/N): ")
  if(ficaptivePortal == "y"):
-  captivePortal_filename = input("[!?] Select file name - /var/www/html/:(index.html) ") or "index.html"
-  os.system("sudo echo -e \"RewriteEngine on\n\
-		RewriteCond %{REQUEST_URI} !^/"+captivePortal_filename+"\n\
-		RewriteRule (.*) http://googleauthentication.com/"+captivePortal_filename+" [R=303,L]\" > /var/www/html/.htaccess")
-  os.system("sudo chmod 777 /var/www/html/ && sudo chmod 777 /var/www/html/*")
-  os.system("sudo echo -e \"<Directory /var/www/>\n\
-   	 	Options Indexes FollowSymLinks\n\
-   	 	AllowOverride All\n\
-   	 	Require all granted\n</Directory>\" >> /etc/apache2/sites-available/000-default.conf")
-  os.system("sudo service apache2 start && sudo service apache2 restart && a2enmod rewrite > /dev/null 2>&1")
   dnsmasq_txt += "dhcp-option=3,10.0.0.1\ndhcp-option=6,10.0.0.1\naddress=/#/10.0.0.1\n"
 #######...0
 
  #..DNSMASQ CONFIG 1
  write_file("/tmp/acp_dnsmasq.conf", dnsmasq_txt)
  input("[!!] Press Enter to continue: ")
+
+ #...0#start redirect http server:80 1
+ print("")
+ print("[~~] Starting http redirect server ...")
+ os.system("kill -9 $(ps -A | grep python | awk '{print $1}')")
+ os.system("python3 /var/www/html/serv.py 80 http://10.0.0.1:233 > /dev/null 2>&1 &")
+ #...0
+ #start real http server:233 1
+ print("[~~] Starting http main server ...")
+ os.system("python3 -m http.server 233 > /dev/null 2>&1 &")
+
  print("[~~] Starting DNSMASQ server...")
  os.system("sudo pkill dnsmasq")
  os.system("sudo dnsmasq -C /tmp/acp_dnsmasq.conf")
- print("")
+ #stay wake video 1
  print("[~~] Starting stay awake video ...")
  os.system("vlc /usr/local/bin/stay_awake.mp4 --loop > /dev/null 2>&1 &")
- print("")
+ #...0
  #start dnsmasq hostapd 1
  print("[~~] Starting HOSTAPD server...")
  print("")
