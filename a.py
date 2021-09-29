@@ -82,7 +82,7 @@ try:
  ##wireshark 1
  fiwireshark = input("[!?] Use wireshark (y/N): ")
  if(fiwireshark == "y"):
-  os.system("sudo wireshark -i "+wlan_ap+" -k &")
+  os.system("sudo wireshark -i "+wlan_ap+" -k > /dev/null 2>&1 &")
  ##captivePortal 1
  ficaptivePortal = input("[!?] Enable captivePortal (y/N): ")
  if(ficaptivePortal == "y"):
