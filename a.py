@@ -96,18 +96,20 @@ try:
  #..DNSMASQ CONFIG 1
  write_file("/tmp/acp_dnsmasq.conf", dnsmasq_txt)
  input("[!!] Press Enter to continue: ")
-
- #...0#start redirect http server:80 1
- print("")
- print("[~~] Starting http redirect server ...")
- os.system("sudo service apache2 stop > /dev/null 2>&1 &")
- os.system("kill -9 $(ps -A | grep python | awk '{print $1}')")
- os.system("python3 /usr/local/bin/acp_serv.py 80 http://10.0.0.1:233 > /dev/null 2>&1 &")
  #...0
- #start real http server:233 1
- print("[~~] Starting http main server ...")
- os.system("python3 -m http.server 233 --directory "+fihttpDirectory+" > /dev/null 2>&1 &")
-
+ 
+ if(ficaptivePortal == "y"):
+  #start redirect http server:80 1
+  print("")
+  print("[~~] Starting http redirect server ...")
+  os.system("sudo service apache2 stop > /dev/null 2>&1 &")
+  os.system("kill -9 $(ps -A | grep python | awk '{print $1}')")
+  os.system("python3 /usr/local/bin/acp_serv.py 80 http://10.0.0.1:233 > /dev/null 2>&1 &")
+  #...0
+  #start real http server:233 1
+  print("[~~] Starting http main server ...")
+  os.system("python3 -m http.server 233 --directory "+fihttpDirectory+" > /dev/null 2>&1 &")
+ #$$$$$$$$$$$$$$$$
  print("[~~] Starting DNSMASQ server...")
  os.system("sudo pkill dnsmasq")
  os.system("sudo dnsmasq -C /tmp/acp_dnsmasq.conf")
