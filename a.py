@@ -99,6 +99,10 @@ try:
   dnsmasq_txt += "dhcp-option=3,10.0.0.1\ndhcp-option=6,10.0.0.1\naddress=/#/10.0.0.1\n"
 #######...0
 
+
+
+ print("[~~] Starting stay awake video ...")
+ os.system("vlc /home/l/stay_awake.mp4 --loop &")
  #..DNSMASQ CONFIG 1
  write_file("/tmp/acp_dnsmasq.conf", dnsmasq_txt)
  print("[~~] Starting DNSMASQ server...")
