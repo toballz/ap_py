@@ -86,10 +86,10 @@ try:
  ficaptivePortal = input("[!?] Enable captivePortal (y/N): ")
  if(ficaptivePortal == "y"):
   dnsmasq_txt += "dhcp-option=3,10.0.0.1\ndhcp-option=6,10.0.0.1\naddress=/#/10.0.0.1\n"
- ##captivePortal 1
- fihttpDirectory = input("[!?] HTTP Directory:(/var/www/html/) ") or "/var/www/html/"
- while(os.path.isdir(fihttpDirectory) == False):
-  fihttpDirectory = input("[!?] Directory do not exist try again: ") or "/var/www/html/"
+  fihttpDirectory = input("[!?] HTTP Directory:(/var/www/html/) ") or "/var/www/html/"
+  while(os.path.isdir(fihttpDirectory) == False):
+   fihttpDirectory = input("[!?] Directory do not exist try again: ") or "/var/www/html/"
+ #...0
 
 #######...0
 
