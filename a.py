@@ -86,6 +86,13 @@ try:
  ficaptivePortal = input("[!?] Enable captivePortal (y/N): ")
  if(ficaptivePortal == "y"):
   dnsmasq_txt += "dhcp-option=3,10.0.0.1\ndhcp-option=6,10.0.0.1\naddress=/#/10.0.0.1\n"
+ ##captivePortal 1
+ fihttpDirectory = input("[!?] HTTP Directory:(/var/www/html/) ") or "/var/www/html/"
+ if(os.path.isdir(fihttpDirectory)):
+  v=1
+ else:
+  fihttpDirectory = input("[!?] Directory do not exist try again: ") or "/var/www/html/"
+
 #######...0
 
  #..DNSMASQ CONFIG 1
@@ -100,7 +107,7 @@ try:
  #...0
  #start real http server:233 1
  print("[~~] Starting http main server ...")
- os.system("python3 -m http.server 233 > /dev/null 2>&1 &")
+ os.system("python3 -m http.server 233 --directory "+fihttpDirectory+" > /dev/null 2>&1 &")
 
  print("[~~] Starting DNSMASQ server...")
  os.system("sudo pkill dnsmasq")
