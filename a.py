@@ -102,7 +102,7 @@ try:
 
 
  print("[~~] Starting stay awake video ...")
- os.system("vlc /usr/local/bin/stay_awake.mp4 --loop &")
+ os.system("vlc /usr/local/bin/stay_awake.mp4 --loop > /dev/null 2>&1 &")
  #..DNSMASQ CONFIG 1
  write_file("/tmp/acp_dnsmasq.conf", dnsmasq_txt)
  print("[~~] Starting DNSMASQ server...")
