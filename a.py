@@ -3,7 +3,6 @@ import os, sys
 import random as rand
 from argparse import ArgumentParser, ArgumentTypeError
 
-cwd = os.getcwd()+"/"
 try:
  #Flush iptables 1
  def flushIpTables():
