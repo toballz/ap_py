@@ -37,8 +37,8 @@ try:
  os.system("sudo echo")
 
  wadapter = socket.if_nameindex()
- wlan_ap = input("[??] Input wireless adapter's name:("+wadapter[2][1]+") ") or wadapter[2]
- eth_ap = input("[??] Input internet access point name:("+wadapter[1][1]+") ") or wadapter[1]
+ wlan_ap = input("[??] Input wireless adapter's name:("+wadapter[2][1]+") ") or wadapter[2][1]
+ eth_ap = input("[??] Input internet access point name:("+wadapter[1][1]+") ") or wadapter[1][1]
 
  #..HOSTAPD CONFIG 1
  ssid = input("[??] Input ssid name:(Free-Wifi) ") or "Free-Wifi"
