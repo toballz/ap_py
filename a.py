@@ -36,7 +36,7 @@ try:
  ###################################################
  os.system("sudo echo")
 
- wadapter = os.listdir('sys/class/net/')
+ wadapter = os.listdir('/sys/class/net/')
  wlan_ap = input("[??] Input wireless adapter's name:("+wadapter[2]+") ") or wadapter[2]
  eth_ap = input("[??] Input internet access point name:("+wadapter[1]+") ") or wadapter[1]
 
