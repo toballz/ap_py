@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import os, sys
+import os, sys, socket
 import random as rand
 from argparse import ArgumentParser, ArgumentTypeError
 
@@ -36,9 +36,9 @@ try:
  ###################################################
  os.system("sudo echo")
 
- wadapter = os.listdir('/sys/class/net/')
- wlan_ap = input("[??] Input wireless adapter's name:("+wadapter[2]+") ") or wadapter[2]
- eth_ap = input("[??] Input internet access point name:("+wadapter[1]+") ") or wadapter[1]
+ wadapter = socket.if_nameindex()
+ wlan_ap = input("[??] Input wireless adapter's name:("+wadapter[2][1]+") ") or wadapter[2]
+ eth_ap = input("[??] Input internet access point name:("+wadapter[1][1]+") ") or wadapter[1]
 
  #..HOSTAPD CONFIG 1
  ssid = input("[??] Input ssid name:(Free-Wifi) ") or "Free-Wifi"
