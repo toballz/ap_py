@@ -36,8 +36,8 @@ try:
  ###################################################
  os.system("sudo echo")
 
- wlan_ap = input("[??] Input wireless adapter's name:(wlan0) ") or os.listdir('sys/class/net/')[2]
- eth_ap = input("[??] Input internet access point name:(eth0) ") or os.listdir('sys/class/net/')[1]
+ wlan_ap = input("[??] Input wireless adapter's name:("+os.listdir('sys/class/net/')[2]+") ") or os.listdir('sys/class/net/')[2]
+ eth_ap = input("[??] Input internet access point name:("+os.listdir('sys/class/net/')[1]+") ") or os.listdir('sys/class/net/')[1]
 
  #..HOSTAPD CONFIG 1
  ssid = input("[??] Input ssid name:(Free-Wifi) ") or "Free-Wifi"
