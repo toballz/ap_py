@@ -68,7 +68,7 @@ try:
  print("[~~] Creating /dnsmasq.conf...")
  os.system("sudo service NetworkManager restart")
  os.system("sudo pkill dnsmasq")
- dnsmasq_txt = "#disable etc/resolv.conf\nno-resolv\n\ninterface="+wlan_ap+"\n\n#starting_range,end_range,lease_time\ndhcp-range=10.0.0.3,10.0.0.20,12h\n\n#dns addresses to send to the clients\nserver=8.8.8.8\nserver=0.0.0.0\nno-hosts\n"
+ dnsmasq_txt = "#disable etc/resolv.conf\nno-resolv\n\ninterface="+wlan_ap+"\n\n#starting_range,end_range,lease_time\ndhcp-range=10.0.0.3,10.0.0.20,12h\n\n#dns addresses to send to the clients\nserver=8.8.8.8\nserver=8.8.4.4\nno-hosts\n"
  #...2
 
  ###########################
