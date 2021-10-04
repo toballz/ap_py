@@ -113,9 +113,6 @@ try:
  print("[~~] Starting DNSMASQ server...")
  os.system("sudo pkill dnsmasq")
  os.system("sudo dnsmasq -C /tmp/acp_dnsmasq.conf")
- #stay wake video 1
- print("[~~] Starting stay awake video ...")
- os.system("vlc /usr/local/bin/acp_stay_awake.mp4 --loop > /dev/null 2>&1 &")
  #...0
  #start dnsmasq hostapd 1
  print("[~~] Starting HOSTAPD server...")
