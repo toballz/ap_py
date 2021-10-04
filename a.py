@@ -51,6 +51,13 @@ try:
  write_file("/tmp/acp_hostapd.conf", hostapd_txt)
  #...0
 
+ #..DNSMASQ CONFIG 3
+ print("[~~] Creating /dnsmasq.conf...")
+ os.system("sudo service NetworkManager restart")
+ os.system("sudo pkill dnsmasq")
+ dnsmasq_txt = "#disable etc/resolv.conf\nno-resolv\n\ninterface="+wlan_ap+"\n\n#starting_range,end_range,lease_time\ndhcp-range=10.0.0.3,10.0.0.20,12h\n\n#dns addresses to send to the clients\nserver=8.8.8.8\nserver=8.8.4.4\nno-hosts\n"
+ #...2
+ 
  #..IPTABLES 1
  print("[~~] Configuring AP interface...")
  os.system("sudo ifconfig " + wlan_ap + " up 10.0.0.1 netmask 255.255.255.0")
@@ -62,14 +69,7 @@ try:
  os.system("sudo iptables --append FORWARD --in-interface " + wlan_ap + " -j ACCEPT")
  os.system("sudo iptables -t nat -A POSTROUTING -o "+eth_ap+" -j MASQUERADE")
  #...0
-
-
- #..DNSMASQ CONFIG 3
- print("[~~] Creating /dnsmasq.conf...")
- os.system("sudo service NetworkManager restart")
- os.system("sudo pkill dnsmasq")
- dnsmasq_txt = "#disable etc/resolv.conf\nno-resolv\n\ninterface="+wlan_ap+"\n\n#starting_range,end_range,lease_time\ndhcp-range=10.0.0.3,10.0.0.20,12h\n\n#dns addresses to send to the clients\nserver=8.8.8.8\nserver=8.8.4.4\nno-hosts\n"
- #...2
+ 
 
  ###########################
  ###########################
