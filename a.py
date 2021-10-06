@@ -27,7 +27,8 @@ try:
     p.stdin.close()
     p.wait()
    _run_cmd_write(("/usr/bin/sudo", "/usr/bin/tee", path), s)
-   os.system("sudo sed -i 's/\r//' "+path)
+   os.system("sudo sed -i 's/\r//' "+path+";\
+   	 sudo dos2unix "+path) #> /dev/null 2>&1")
  #...0
 
  #kill stop all
