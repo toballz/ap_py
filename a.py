@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import os, sys, socket
+import os, sys, socket, subprocess
 import random as rand
 from argparse import ArgumentParser, ArgumentTypeError
 
@@ -17,13 +17,21 @@ try:
 
  #write file function
  def write_file(path, s):
-  os.system("sudo echo -e \""+s+"\" > "+path+";\
-	sudo sed -i 's/\r//' "+path)
+   def _run_cmd_write(cmd_args, s):
+    # write a file using sudo
+    p = subprocess.Popen(cmd_args,
+                stdin=subprocess.PIPE,
+                stdout=subprocess.DEVNULL,
+                shell=False, universal_newlines=True)
+    p.stdin.write(s)
+    p.stdin.close()
+    p.wait()
+   _run_cmd_write(("/usr/bin/sudo", "/usr/bin/tee", path), s)
+   os.system("sudo sed -i 's/\r//' "+path)
  #...0
 
  #kill stop all
  def killSall():
-  print("")
   print("")
   print("[~~] Stopping...")
   flushIpTables()
@@ -32,8 +40,14 @@ try:
 	sudo sysctl net.ipv4.ip_forward=0 > /dev/null 2>&1")
   print("[~~] Killing http server...")
   os.system("kill -9 $(ps -A | grep python | awk '{print $1}') > /dev/null 2>&1 &")
+  
+  #..Network.conf 1
+  print("[~~] Restoring backup NetworkManager.conf...")
+  os.system("sudo rm /etc/NetworkManager/NetworkManager.conf")
+  os.system("sudo mv /etc/NetworkManager/NetworkManager.conf.acp_backup /etc/NetworkManager/NetworkManager.conf > /dev/null 2>&1;")
   print("[~~] Restarting Network-Manager...")
   os.system("sudo service NetworkManager restart")
+  #...0
   print("!done..")
   #...0
 
@@ -52,7 +66,7 @@ try:
 
  print("")
  print("[~~] creating /hostapd.conf ...")
- hostapd_txt = "interface=" + wlan_ap + "\ndriver=nl80211\nssid=" + ssid + "\nhw_mode=g\nchannel=" + channel + "\nmacaddr_acl=0\nauth_algs=1\nignore_broadcast_ssid=0\n"
+ hostapd_txt = "interface="+wlan_ap+"\ndriver=nl80211\nssid=" + ssid + "\nhw_mode=g\nchannel=" + channel + "\nmacaddr_acl=0\nauth_algs=1\nignore_broadcast_ssid=0\n"
  write_file("/tmp/acp_hostapd.conf", hostapd_txt)
  #...0
 
@@ -63,6 +77,14 @@ try:
  write_file("/tmp/acp_dnsmasq.conf", dnsmasq_txt)
  #...0
 
+ #..Network.conf 1
+ print("[~~] Backing up NetworkManager.conf...")
+ os.system("sudo mv /etc/NetworkManager/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf.acp_backup > /dev/null 2>&1;")
+ networkManager_txt = "[main]\nplugins=keyfile\n\n[keyfile]\nunmanaged-devices=interface-name:"+wlan_ap+"\n"
+ print("[~~] Editing NetworkManager.conf...")
+ write_file("/etc/NetworkManager/NetworkManager.conf", networkManager_txt)
+ os.system("sudo service NetworkManager restart")
+ #...0
 
  ###########################
  ###########################
@@ -130,11 +152,11 @@ try:
  #...0
 
  #end all 1
- print("")
  killSall()
  #...0
 except:
  #..stop all 1
+ print("")
  killSall()
  print("Error:-",sys.exc_info())
  #...0
