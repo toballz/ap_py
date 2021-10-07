@@ -44,8 +44,8 @@ try:
   
   #..Network.conf 1
   print("[~~] Restoring backup NetworkManager.conf...")
-  os.system("sudo rm /etc/NetworkManager/NetworkManager.conf")
-  os.system("sudo mv /etc/NetworkManager/NetworkManager.conf.acp_backup /etc/NetworkManager/NetworkManager.conf > /dev/null 2>&1;")
+  os.system("sudo rm /etc/NetworkManager/NetworkManager.conf > /dev/null 2>&1")
+  os.system("sudo mv /etc/NetworkManager/NetworkManager.conf.acp_backup /etc/NetworkManager/NetworkManager.conf > /dev/null 2>&1")
   print("[~~] Restarting Network-Manager...")
   os.system("sudo service NetworkManager restart")
   #...0
