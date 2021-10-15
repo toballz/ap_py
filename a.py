@@ -67,7 +67,7 @@ try:
 
  print("")
  print("[~~] creating /hostapd.conf ...")
- hostapd_txt = "interface="+wlan_ap+"\ndriver=nl80211\nssid=" + ssid + "\nhw_mode=g\nchannel=" + channel + "\nmacaddr_acl=0\nauth_algs=1\nignore_broadcast_ssid=0\n"
+ hostapd_txt = "interface="+wlan_ap+"\ndriver=nl80211\nssid=" + ssid + "\nhw_mode=g\nchannel=" + channel + "\nmacaddr_acl=0\nauth_algs=1\nignore_broadcast_ssid=0\ndisassoc_low_ack=0\n"
  write_file("/tmp/acp_hostapd.conf", hostapd_txt)
  #...0
 
